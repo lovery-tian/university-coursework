@@ -1,0 +1,18 @@
+close all;
+clear;
+clc;
+
+% 1. 读取彩色图像
+RGB = imread('D:\Program Files\Polyspace\R2021a\zjc\football.jpg');
+[a b c]=size(RGB);
+% 2. 提取三基色通道
+R(:, :, 1) = RGB(:, :, 1);   % 红
+R(:, :, 1) =zeros(a,b);   % 红
+R(:, :, 1) = RGB(:, :, 1);   % 红
+
+
+
+% 4. 若想看到“彩色”的通道图，可把另两通道置零
+figure; imshow(cat(3,R,zeros(size(R)),zeros(size(R)))); title('Red通道(彩色)');
+figure; imshow(cat(3,zeros(size(G)),G,zeros(size(G)))); title('Green通道(彩色)');
+figure; imshow(cat(3,zeros(size(B)),zeros(size(B)),B)); title('Blue通道(彩色)');
