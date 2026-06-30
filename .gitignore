@@ -44,3 +44,17 @@ venv/
 *.zip
 *.rar
 *.7z
+
+# Vivado / FPGA
+*.cache/
+*.hw/
+*.ip_user_files/
+*.runs/
+*.sim/
+*.jou
+*.log
+*.str
+.Xil/
+vivado_*
+hw_platforms/
+*.xpr
