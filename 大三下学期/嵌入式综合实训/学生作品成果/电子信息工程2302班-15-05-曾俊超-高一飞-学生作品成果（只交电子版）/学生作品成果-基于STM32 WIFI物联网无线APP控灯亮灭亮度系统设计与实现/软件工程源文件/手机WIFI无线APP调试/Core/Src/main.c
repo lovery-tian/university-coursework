@@ -1,0 +1,486 @@
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * @file           : main.c
+  * @brief          : Main program body
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2023 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+/* Includes ------------------------------------------------------------------*/
+#include "main.h"
+#include "usart.h"
+#include "gpio.h"
+
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
+//OLED_U8G2_MODE=1:U8G2֧��   OLED_U8G2_MODE=0:��ͳOLED����
+#define OLED_U8G2_MODE 1  //�����л���ͳOLED������������U8G2֧��
+
+#include "LED.h"
+//#include "key.h"
+//#include "RGBLED.h"
+//#include "motor.h"
+//#include "encoder.h"
+//#include "control.h"
+
+
+//#if OLED_U8G2_MODE==0
+//#include "oled.h"
+//#include "i2c.h"
+//#else
+//#include "stm32_u8g2.h"
+//#include "u8g2_test.h"
+//#endif
+
+#include "uart.h"
+//C��
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+/* USER CODE END Includes */
+
+/* Private typedef -----------------------------------------------------------*/
+/* USER CODE BEGIN PTD */
+
+/* USER CODE END PTD */
+
+/* Private define ------------------------------------------------------------*/
+/* USER CODE BEGIN PD */
+/* USER CODE END PD */
+
+/* Private macro -------------------------------------------------------------*/
+/* USER CODE BEGIN PM */
+
+/* USER CODE END PM */
+
+/* Private variables ---------------------------------------------------------*/
+
+/* USER CODE BEGIN PV */
+
+/* USER CODE END PV */
+
+/* Private function prototypes -----------------------------------------------*/
+void SystemClock_Config(void);
+/* USER CODE BEGIN PFP */
+void keytest(void);
+void beep_test(void);
+void RGBLED_test(void);
+int Get_RandnomRange(int min, int max);
+void oled_u8g2_test(void);
+
+/* USER CODE END PFP */
+
+/* Private user code ---------------------------------------------------------*/
+/* USER CODE BEGIN 0 */
+uint8_t beep_state=0;
+
+//#if OLED_U8G2_MODE!=0
+//u8g2_t u8g2; // ��������һ����ʾ������������
+//#endif
+
+unsigned char led1Count=0;	//led 对比pwm值计数
+unsigned char led2Count=0;
+unsigned char PWML_LED1=3; //led PWM 范围0-10
+unsigned char PWML_LED2=10;
+
+unsigned char BufTab[10]; //wifi数据暂存
+unsigned char Count;	    //串口数据计数
+unsigned char UartBusy=0;  //判断忙碌
+unsigned char ReadFlag=0; //读取标志
+unsigned char sendDataFlag=0;	//发送数据标志
+u8 rebackFalg= 0; //数据返回标志
+u8 MesCount=0;	//发送内容计数
+
+
+/* USER CODE END 0 */
+
+/**
+  * @brief  The application entry point.
+  * @retval int
+  */
+int main(void)
+{
+    /* USER CODE BEGIN 1 */
+    int Speed_L,Speed_R;
+//	u8 len;
+    char *dataPtr = NULL;
+    char numBuf[10];
+    int num = 0;
+
+    uint16_t led_count=0;
+
+//    DelayUs(2000);
+    /* USER CODE END 1 */
+
+    /* MCU Configuration--------------------------------------------------------*/
+
+    /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+    HAL_Init();
+
+    /* USER CODE BEGIN Init */
+
+    /* USER CODE END Init */
+
+    /* Configure the system clock */
+    SystemClock_Config();
+
+    /* USER CODE BEGIN SysInit */
+
+    /* USER CODE END SysInit */
+
+    /* Initialize all configured peripherals */
+    MX_GPIO_Init();
+
+    /* USER CODE BEGIN 2 */
+
+    int i=0;
+
+    i=50;
+    //串口助手设置波特率为9600 AT+UART=9600,8,1,0,0
+    while(i--) HAL_Delay(100);
+
+    MX_USART1_UART_Init();
+	
+    USART_RX_STA=0;
+    memset(USART_RX_BUF, 0, sizeof(USART_RX_BUF));
+	
+	//第一次使用前 需要根据ESP8266 串口波特率设置 对应的32串口波特率，如果不能确定 多试几次
+	
+    //UsartPrintf(huart1,"AT+UART=%d,8,1,0,0\r\n",9600); //根据需要修改波特率
+	//UsartPrintf(huart1,"AT+UART=%d,8,1,0,0\r\n",115200); //根据需要修改波特率
+    i=10;
+
+    while(i--) HAL_Delay(100);
+
+    UsartPrintf(huart1,"AT+CWMODE=2\r\n");		   //AP模式
+    i=10;
+
+    while(i--) HAL_Delay(100);
+    UsartPrintf(huart1,"AT+CIPMUX=1\r\n");		   //允许链接
+    i=10;
+    while(i--) HAL_Delay(100);
+    UsartPrintf(huart1,"AT+CIPSERVER=1,8080\r\n");	   //创建端口号8080//**All notes can be deleted and modified**//
+
+
+
+//    HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_4);//���ֵ��
+//    HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);//���ֵ��
+
+//    HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_1); // �������ֱ�����B
+//    HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_2); // �������ֱ�����A
+
+//    HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_1); // �������ֱ�����B
+//    HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_2); // �������ֱ�����A
+
+//    HAL_TIM_Base_Start_IT(&htim4);                // ʹ�ܶ�ʱ��4�ж�
+
+    //UsartPrintf(huart1,"start-------------------------\r\n");//���뻻��
+
+    uint8_t uart_recv_flag = 0;
+
+    /* USER CODE END 2 */
+
+    /* Infinite loop */
+    /* USER CODE BEGIN WHILE */
+    while (1)
+    {
+
+
+        HAL_Delay(1-1);
+        led_count++;
+        if(led_count==2)
+        {
+            //HAL_GPIO_TogglePin(LED_GPIO_Port,LED_Pin);
+            //uart_recv_flag=1;
+            led_count=0;
+
+            if((USART_RX_STA&0x8000 ) )//&& uart_recv_flag
+            {
+//			len=USART_RX_STA&0x3fff;//�õ��˴ν��յ������ݳ���
+//			UsartPrintf(huart1,"\r\n�����͵���ϢΪ:\r\n");
+//			HAL_UART_Transmit(&huart1,(uint8_t*)USART_RX_BUF,len,1000);	//���ͽ��յ�������
+//			while(__HAL_UART_GET_FLAG(&huart1,UART_FLAG_TC)!=SET);		//�ȴ����ͽ���
+//			UsartPrintf(huart1,"\r\n\r\n");//���뻻��
+
+
+//            dataPtr = strchr((const char *)USART_RX_BUF, '=');							//����':'
+
+//            if(dataPtr != NULL)									//����ҵ���
+//            {
+//                dataPtr++;
+
+//                while(*dataPtr >= '0' && *dataPtr <= '9')		//�ж��Ƿ����·��������������
+//                {
+//                    numBuf[num++] = *dataPtr++;
+//                }
+
+//                num = atoi((const char *)numBuf);				//תΪ��ֵ��ʽ
+
+//                if(strstr((char *)USART_RX_BUF, "UARTBPS"))				//����"redled"
+//                {
+//                    UsartPrintf(huart1,"AT+UART=%d,8,1,0,0\r\n",num);
+//                }
+
+
+//            }
+
+                if((strstr((const char *)USART_RX_BUF,"OPEN1")!=NULL)||(strstr((const char * )USART_RX_BUF,"LED1-3")!=NULL))	 //接收到LPEN1 LED1-3
+                {
+                    PWML_LED1=10;
+                    rebackFalg=1;//设置pwm 发送标志置位
+                }
+                else if(strstr((const char * )USART_RX_BUF,(const char * )"CLOSE1")!=NULL)	  //接收到CLOSE1
+                {
+                    PWML_LED1=0;
+                    rebackFalg=1;//设置pwm 发送标志置位
+                }
+                else if(strstr((const char *)USART_RX_BUF,"LED1-1")!=NULL)	   //接收到LED1-1
+                {
+                    PWML_LED1=3;
+                    rebackFalg=1;//设置pwm 发送标志置位
+                }
+                else if(strstr((const char *)USART_RX_BUF,"LED1-2")!=NULL)	  //接收到LED1-2
+                {
+                    PWML_LED1=6;
+                    rebackFalg=1;//设置pwm 发送标志置位
+                }
+                else if((strstr((const char *)USART_RX_BUF,"OPEN2")!=NULL)||(strstr((const char *)USART_RX_BUF,"LED2-3")!=NULL))	 //接收到	OPEN2
+                {
+                    PWML_LED2=10;
+                    rebackFalg=1;//设置pwm 发送标志置位
+                }
+                else if(strstr((const char *)USART_RX_BUF,"CLOSE2")!=NULL)	  //接收到LLOSE2
+                {
+                    PWML_LED2=0;
+                    rebackFalg=1;//设置pwm 发送标志置位
+                }
+                else if(strstr((const char *)USART_RX_BUF,"LED2-1")!=NULL)	   //接收到LED2-1
+                {
+                    PWML_LED2=3;
+                    rebackFalg=1;//设置pwm 发送标志置位
+                }
+                else if(strstr((const char *)USART_RX_BUF,"LED2-2")!=NULL)	 //接收到LED2-2
+                {
+                    PWML_LED2=6;
+                    rebackFalg=1;//设置pwm 发送标志置位
+                }
+                else if(strstr((const char *)USART_RX_BUF,"OPENALL")!=NULL)	 //接收OENALL
+                {
+                    PWML_LED1=10;
+                    PWML_LED2=10;
+                    rebackFalg=1;		//设置pwm 发送标志置位
+                }
+                else if(strstr((const char *)USART_RX_BUF,"CLOSEALL")!=NULL)	  //接收到CLOSEALL
+                {
+                    PWML_LED1=0;
+                    PWML_LED2=0;
+                    rebackFalg=1;
+                }
+
+
+//			UsartPrintf(huart1,"AT+CIPSEND=0,2\r\n");
+//			UsartPrintf(huart1,"OK");
+
+
+                num=0;
+                memset(numBuf, 0, sizeof(numBuf));
+                USART_RX_STA=0;
+                memset(USART_RX_BUF, 0, sizeof(USART_RX_BUF));
+                uart_recv_flag=0;
+            }
+
+        }
+
+
+
+        led1Count++;		//led 对比pwm值计数
+        led2Count++;		//led 对比pwm值计数
+        if(led1Count<PWML_LED1)	   //led1 PWM对比
+        {
+            //LED1=0;			  //开灯
+            HAL_GPIO_WritePin(LED1_GPIO_Port,LED1_Pin,0);
+        }
+        else if((led1Count>=PWML_LED1)&&(led1Count<=10))	 //led1 PWM对比
+        {
+            //LED1=1;			//关灯
+            HAL_GPIO_WritePin(LED1_GPIO_Port,LED1_Pin,1);
+        }
+        else
+        {
+            led1Count=0;  //一个周期结束
+        }
+
+        if(led2Count<PWML_LED2)	   //led2 PWM对比
+        {
+            //LED2=0;			   //开灯
+            HAL_GPIO_WritePin(LED2_GPIO_Port,LED2_Pin,0);
+        }
+        else if((led2Count>=PWML_LED2)&&(led2Count<=10))	 //led2 PWM对比
+        {
+            //LED2=1;			//关灯
+            HAL_GPIO_WritePin(LED2_GPIO_Port,LED2_Pin,1);
+        }
+        else
+        {
+            led2Count=0;  //一个周期结束
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* USER CODE END WHILE */
+
+        /* USER CODE BEGIN 3 */
+    }
+    /* USER CODE END 3 */
+}
+
+/**
+  * @brief System Clock Configuration
+  * @retval None
+  */
+void SystemClock_Config(void)
+{
+    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+    RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+
+    /** Initializes the RCC Oscillators according to the specified parameters
+    * in the RCC_OscInitTypeDef structure.
+    */
+    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+    RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+    RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
+    RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+    RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+    RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
+    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+    {
+        Error_Handler();
+    }
+
+    /** Initializes the CPU, AHB and APB buses clocks
+    */
+    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                                  |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+
+    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+    {
+        Error_Handler();
+    }
+}
+
+/* USER CODE BEGIN 4 */
+
+//��ȡָ����Χ[min, max]�������
+
+//void oled_u8g2_test()
+//{
+//#if OLED_U8G2_MODE!=0
+
+//    u8g2_FirstPage(&u8g2);
+//    do
+//    {
+//        draw(&u8g2);
+
+//        u8g2DrawTest(&u8g2);
+//    } while (u8g2_NextPage(&u8g2));
+
+//#endif
+//}
+
+int Get_RandnomRange(int min, int max)
+{
+    return min +  rand()%(max-min+1);   //ʹ����λ��ĳ����Χ
+}
+
+//void RGBLED_test()
+//{
+//    Set_index_RGB_LED(2,0xff0000,0x00ffff);
+//    HAL_Delay(500);
+//    Set_index_RGB_LED(2,0x00ff00,0xffff00);
+//    HAL_Delay(500);
+//    Set_index_RGB_LED(2,0xffffff,0x000000);
+//    HAL_Delay(500);
+//    Set_index_RGB_LED(2,0x000000,0xffffff);
+//    HAL_Delay(500);
+//}
+
+//void beep_test()
+//{
+//    beep_state = PAin(12);
+//    PAout(12)=~beep_state;
+//}
+//void keytest()
+//{
+//    switch(Keyboard())
+//    {
+//    case KEY0DOWN:
+//        UsartPrintf(huart1, "����0--����\r\n");
+//        break;
+//    case KEY0DOUBLE:
+//        UsartPrintf(huart1, "����0--˫��\r\n");
+//        break;
+//    case KEY0DOWNLONG:
+//        UsartPrintf(huart1, "����0--����\r\n");
+//        break;
+//    }
+//}
+
+/* USER CODE END 4 */
+
+/**
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
+void Error_Handler(void)
+{
+    /* USER CODE BEGIN Error_Handler_Debug */
+    /* User can add his own implementation to report the HAL error return state */
+    __disable_irq();
+    while (1)
+    {
+    }
+    /* USER CODE END Error_Handler_Debug */
+}
+
+#ifdef  USE_FULL_ASSERT
+/**
+  * @brief  Reports the name of the source file and the source line number
+  *         where the assert_param error has occurred.
+  * @param  file: pointer to the source file name
+  * @param  line: assert_param error line source number
+  * @retval None
+  */
+void assert_failed(uint8_t *file, uint32_t line)
+{
+    /* USER CODE BEGIN 6 */
+    /* User can add his own implementation to report the file name and line number,
+       ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+    /* USER CODE END 6 */
+}
+#endif /* USE_FULL_ASSERT */

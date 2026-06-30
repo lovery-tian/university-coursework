@@ -1,0 +1,17 @@
+STM32单片机手机WIFI无线APP控灯亮灭亮度系统9
+本系统由STM32F103C8T6单片机、两位白色高亮LED灯、WIFI模块
+ESP8266及电源组成。
+1、手机APP和stm32设备上WIFI模块进行连接。
+2、单片机系统实时监测wifi数据，解析数据后通过pwm控制led的亮
+灭及亮度程度。
+
+手机发送指令：
+OPEN1，第一个灯亮；OPEN2，第二个灯亮；
+CLOSE1，第一个灯灭；CLOSE2，第二个灯灭；
+LED1-1，第一个等处于1档，LED1-2，第1个等处于2档，LED1-3，第一个等处于3档。
+LED2-1，第2个等处于1档，LED2-2，第2个等处于2档，LED2-3，第2个等处于3档，
+OPENALL：全亮
+CLOSEALL：全灭！
+
+开发板演示视频百度云网盘链接：
+https://pan.baidu.com/s/1-RAuCPG-coo_RnyYc7b6Qw

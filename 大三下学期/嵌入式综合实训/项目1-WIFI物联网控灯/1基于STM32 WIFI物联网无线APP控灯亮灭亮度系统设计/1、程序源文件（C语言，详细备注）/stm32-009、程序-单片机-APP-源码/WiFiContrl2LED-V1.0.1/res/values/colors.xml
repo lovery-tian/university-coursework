@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+ 
+<color name="white">#FFFFFF</color><!--白色 -->
+<color name="black">#000000</color><!--黑色 -->
+<color name="lightGray">#c1c1c1</color><!-- 浅灰色 -->
+<color name="deepGray">#595959</color><!-- 深灰色 -->
+<color name="lightBlue">#0099ff</color><!--淡蓝色 -->
+<color name="deepBlue">#082b89</color><!--蓝色 -->
+<color name="green">#00ff00</color><!--绿色 -->
+<color name="deepGreen">#009933</color><!--深绿色 -->
+<color name="deepRed">#990033</color><!--淡红色 -->
+<color name="dialog_window_background">#99ffffff</color> 
+  <color name="contents_text">#ff000000</color>
+  <color name="encode_view">#ffffffff</color>
+  <color name="help_button_view">#ffcccccc</color>
+  <color name="help_view">#ff404040</color>
+  <color name="possible_result_points">#c0ffff00</color>  
+  <color name="result_image_border">#ffffffff</color>
+  <color name="result_minor_text">#ffc0c0c0</color>
+  <color name="result_points">#c000ff00</color>
+  <color name="result_text">#ffffffff</color>
+  <color name="result_view">#b0000000</color>
+  <color name="sbc_header_text">#ff808080</color>
+  <color name="sbc_header_view">#ffffffff</color>
+  <color name="sbc_list_item">#fffff0e0</color>
+  <color name="sbc_layout_view">#ffffffff</color>
+  <color name="sbc_page_number_text">#ff000000</color>
+  <color name="sbc_snippet_text">#ff4b4b4b</color>
+  <color name="share_text">#ff000000</color>
+  <color name="share_view">#ffffffff</color>
+  <color name="status_view">#50000000</color>
+  <color name="status_text">#ffffffff</color>
+  <color name="transparent">#00000000</color>
+  <color name="viewfinder_frame">#ff000000</color>
+  <color name="viewfinder_laser">#ff86f60e</color>
+  <color name="viewfinder_laser_trs">#7f86f60e</color>
+  <color name="viewfinder_mask">#a0000000</color>
+    
+</resources>
