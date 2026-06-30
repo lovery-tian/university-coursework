@@ -1,0 +1,193 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    11/17/2025  16:59:30  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\main.obj TO .\Objects\Project PRINT (.\Listings\Project.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\main.obj (MAIN)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?IMUL)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  .\Objects\Project (MAIN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0004H     UNIT         ?DT?MAIN
+            DATA    000CH     0003H     UNIT         _DATA_GROUP_
+                    000FH     0011H                  *** GAP ***
+            BIT     0020H.0   0000H.2   UNIT         ?BI?MAIN
+                    0020H.2   0000H.6                *** GAP ***
+            IDATA   0021H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0008H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     0108H     UNIT         ?PR?PLAYHAPPYBRITHDAY?MAIN
+            CODE    0116H     008DH     UNIT         ?CO?MAIN
+            CODE    01A3H     008CH     UNIT         ?C_C51STARTUP
+            CODE    022FH     001CH     UNIT         ?PR?MAIN?MAIN
+            CODE    024BH     0012H     UNIT         ?C?LIB_CODE
+            CODE    025DH     0011H     UNIT         ?PR?INTERRUPTTIMER0?MAIN
+            CODE    026EH     000DH     UNIT         ?C_INITSEG
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\Project (MAIN)
+
+
+SEGMENT                              DATA_GROUP 
+  +--> CALLED SEGMENT              START    LENGTH
+--------------------------------------------------
+?C_C51STARTUP                      -----    -----
+  +--> ?PR?MAIN?MAIN
+  +--> ?C_INITSEG
+
+?PR?MAIN?MAIN                      -----    -----
+  +--> ?PR?PLAYHAPPYBRITHDAY?MAIN
+
+?PR?PLAYHAPPYBRITHDAY?MAIN         000CH    0003H
+  +--> ?CO?MAIN
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  11/17/2025  16:59:30  PAGE 2
+
+
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\Project (MAIN)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  C:025DH         PUBLIC        InterruptTimer0
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  C:0116H         PUBLIC        NoteFrequ
+  C:022FH         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  D:0008H         PUBLIC        TORH
+  D:000AH         PUBLIC        TORL
+  B:00A8H.1       PUBLIC        ET0
+  B:0090H.6       PUBLIC        BUZZ
+  D:008CH         PUBLIC        TH0
+  B:0020H.0       PUBLIC        timeflag
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  C:000EH         PUBLIC        PlayHappyBrithday
+  D:00C8H         PUBLIC        T2CON
+  B:0020H.1       PUBLIC        enable
+  C:0140H         PUBLIC        NoteReload
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  C:022FH         LINE#         43
+  C:022FH         LINE#         44
+  C:022FH         LINE#         45
+  C:0231H         LINE#         46
+  C:0234H         LINE#         47
+  C:0237H         LINE#         48
+  C:023AH         LINE#         49
+  C:023CH         LINE#         50
+  C:023EH         LINE#         52
+  C:0241H         LINE#         55
+  C:0243H         LINE#         56
+  C:0245H         LINE#         57
+  C:0247H         LINE#         58
+  C:0249H         LINE#         60
+  -------         ENDPROC       MAIN
+  -------         PROC          PLAYHAPPYBRITHDAY
+  -------         DO            
+  D:0001H         SYMBOL        beat
+  D:000CH         SYMBOL        note
+  D:0002H         SYMBOL        time
+  D:0004H         SYMBOL        beatTime
+  D:000DH         SYMBOL        soundTime
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  11/17/2025  16:59:30  PAGE 3
+
+
+  C:016AH         SYMBOL        HappyBrithdayNote
+  C:0187H         SYMBOL        HappyBrithdayBeat
+  -------         ENDDO         
+  C:000EH         LINE#         63
+  C:000EH         LINE#         64
+  C:000EH         LINE#         67
+  C:0011H         LINE#         68
+  C:0013H         LINE#         69
+  C:0017H         LINE#         88
+  C:0025H         LINE#         89
+  C:0025H         LINE#         90
+  C:0028H         LINE#         91
+  C:002AH         LINE#         93
+  C:0031H         LINE#         94
+  C:0031H         LINE#         95
+  C:0039H         LINE#         98
+  C:003DH         LINE#         99
+  C:003DH         LINE#         101
+  C:005FH         LINE#         102
+  C:0064H         LINE#         103
+  C:0070H         LINE#         104
+  C:0076H         LINE#         105
+  C:0078H         LINE#         106
+  C:007DH         LINE#         107
+  C:007FH         LINE#         109
+  C:007FH         LINE#         111
+  C:00ABH         LINE#         112
+  C:00BEH         LINE#         113
+  C:00D5H         LINE#         114
+  C:00DBH         LINE#         115
+  C:00DDH         LINE#         116
+  C:00E2H         LINE#         117
+  C:00E2H         LINE#         118
+  C:00E5H         LINE#         120
+  C:00E5H         LINE#         121
+  C:00ECH         LINE#         122
+  C:00ECH         LINE#         123
+  C:00EFH         LINE#         124
+  C:00F0H         LINE#         125
+  C:00F3H         LINE#         127
+  C:00F3H         LINE#         128
+  C:00F8H         LINE#         130
+  C:0110H         LINE#         131
+  C:0112H         LINE#         132
+  C:0112H         LINE#         133
+  C:0112H         LINE#         134
+  C:0115H         LINE#         135
+  -------         ENDPROC       PLAYHAPPYBRITHDAY
+  -------         PROC          INTERRUPTTIMER0
+  C:025DH         LINE#         137
+  C:025DH         LINE#         139
+  C:025FH         LINE#         140
+  C:0262H         LINE#         141
+  C:0265H         LINE#         143
+  C:0268H         LINE#         144
+  C:026BH         LINE#         146
+  C:026DH         LINE#         147
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  11/17/2025  16:59:30  PAGE 4
+
+
+  -------         ENDPROC       INTERRUPTTIMER0
+  -------         ENDMOD        MAIN
+
+  -------         MODULE        ?C?IMUL
+  C:024BH         PUBLIC        ?C?IMUL
+  -------         ENDMOD        ?C?IMUL
+
+Program Size: data=16.2 xdata=0 code=627
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

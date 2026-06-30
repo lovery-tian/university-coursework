@@ -1,0 +1,46 @@
+# 系统文件
+desktop.ini
+Thumbs.db
+.DS_Store
+
+# 临时文件
+~$*
+*.tmp
+*.swp
+*.bak
+
+# 编译产物 (FPGA/嵌入式)
+*.o
+*.obj
+*.hex
+*.bin
+*.elf
+*.out
+*.lst
+*.map
+Build/
+Debug/
+Release/
+obj/
+bin/
+
+# Proteus
+Project Backups/
+*.workspace
+
+# Keil/MDK
+*.uvguix.*
+*.scvd
+JLinkLog.txt
+*.pack
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# 压缩包（源码解压后不需要）
+*.zip
+*.rar
+*.7z

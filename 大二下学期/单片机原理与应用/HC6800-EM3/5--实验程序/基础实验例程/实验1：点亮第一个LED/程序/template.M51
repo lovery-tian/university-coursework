@@ -1,0 +1,43 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        05/08/2018  13:34:27  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE LED.obj TO template
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  LED.obj (LED)
+
+
+LINK MAP OF MODULE:  template (LED)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+
+
+OVERLAY MAP OF MODULE:   template (LED)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+
+
+SYMBOL TABLE OF MODULE:  template (LED)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        LED
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  -------         ENDMOD        LED
+
+*** WARNING L10: CANNOT DETERMINE ROOT SEGMENT
+
+Program Size: data=0.0 xdata=0 code=0
+LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)
